@@ -12,10 +12,29 @@ puts "EventManager Initialized!"
 	#puts name
 #}
 
+#def clean_zipcode(zipcode)							#method for cleaning up the zip code
+	#if zipcode.nil?												#if zipcode is blank then fill in with zero's
+		#	"00000"
+		#elsif zipcode.length < 5							#add a zero to the beginning of the zip code if length is less than 5 digits
+			#zipcode.rjust(5, "0")
+		#elsif zipcode.length > 5							#if zipcode length is over 5 digits then pick the first 5 digits
+			#zipcode[0..4]
+		#else
+			#zipcode
+	#end							
+#end
+
+def clean_zipcode(zipcode)								#A more idiomatic way to accomplish the same thing as the above method
+	zipcode.to_s.rjust(5, "0")[0..4]
+end
+
+
+
+
 
 contents = CSV.open "event_attendees.csv", headers: true, header_converters: :symbol #use CSV's open method to load file, add "header" parameter which states that the file has headers
 contents.each { |row| 
 	name = row[:first_name]
-	zipcode = row[:zipcode]
+	zipcode = clean_zipcode(row[:zipcode])
 	puts "#{name} #{zipcode}"
 }
